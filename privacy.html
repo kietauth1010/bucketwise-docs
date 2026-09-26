@@ -1,0 +1,321 @@
+<title>Bucketwise Privacy</title>
+<style>
+  :root{
+    --bg:#F5F6F8;
+    --surface:#FFFFFF;
+    --surface-2:#EEF0F3;
+    --text:#171B24;
+    --text-muted:#5C6472;
+    --border:#DFE3E8;
+    --accent:#1F7A6C;
+    --accent-soft:#E4F1EE;
+    --mono-chip:#171B24;
+    --mono-chip-text:#F5F6F8;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141B;
+      --surface:#171C25;
+      --surface-2:#1E2430;
+      --text:#E7EAEE;
+      --text-muted:#9AA3B2;
+      --border:#2A313D;
+      --accent:#4FD1B8;
+      --accent-soft:#17332E;
+      --mono-chip:#4FD1B8;
+      --mono-chip-text:#0E1B18;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141B;
+    --surface:#171C25;
+    --surface-2:#1E2430;
+    --text:#E7EAEE;
+    --text-muted:#9AA3B2;
+    --border:#2A313D;
+    --accent:#4FD1B8;
+    --accent-soft:#17332E;
+    --mono-chip:#4FD1B8;
+    --mono-chip-text:#0E1B18;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    padding-inline:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);}
+
+  .page{
+    max-width:700px;
+    margin:0 auto;
+    padding-block:48px 80px;
+  }
+
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:14px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  h1{
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:600;
+    font-size:clamp(2rem,6vw,2.8rem);
+    line-height:1.08;
+    margin:0 0 12px;
+    text-wrap:balance;
+  }
+  .sub{
+    color:var(--text-muted);
+    font-size:1.05rem;
+    line-height:1.5;
+    max-width:520px;
+    margin:0 0 28px;
+  }
+
+  .updated{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.85rem;
+    color:var(--text-muted);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:100px;
+    padding:6px 14px;
+    margin-bottom:36px;
+  }
+  .updated .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  article{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:clamp(24px,5vw,48px);
+  }
+
+  section{margin-bottom:40px;}
+  section:last-child{margin-bottom:0;}
+
+  h2{
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:600;
+    font-size:1.45rem;
+    margin:0 0 14px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+  }
+
+  p{
+    line-height:1.65;
+    max-width:62ch;
+    margin:0 0 14px;
+  }
+  p:last-child{margin-bottom:0;}
+
+  ul{
+    margin:0 0 14px;
+    padding-left:1.3em;
+    line-height:1.65;
+  }
+  li{margin-bottom:8px;}
+  li:last-child{margin-bottom:0;}
+
+  strong{color:var(--text);font-weight:700;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:6px;
+  }
+  @media (max-width:520px){.grid{grid-template-columns:1fr;}}
+
+  .fact{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    background:var(--surface-2);
+  }
+  .fact .k{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:block;
+    margin-bottom:6px;
+  }
+  .fact .v{
+    font-weight:700;
+    line-height:1.4;
+  }
+
+  .callout{
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    border-radius:12px;
+    padding:16px 20px;
+    margin-top:16px;
+  }
+  .callout p{margin:0;max-width:none;}
+  .callout .label{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+
+  .copyrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .copyrow code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.9rem;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:6px 10px;
+  }
+  .copy-btn{
+    font-family:'Manrope',sans-serif;
+    font-size:0.82rem;
+    font-weight:700;
+    color:var(--accent);
+    background:transparent;
+    border:1px solid var(--accent);
+    border-radius:7px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--accent-soft);}
+  .copy-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  footer{
+    margin-top:40px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+    color:var(--text-muted);
+    font-size:0.9rem;
+    line-height:1.6;
+  }
+  footer strong{color:var(--text);}
+
+  @media (max-width:520px){
+    article{padding:24px;border-radius:14px;}
+    h1{font-size:2rem;}
+  }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<div class="page">
+  <div class="eyebrow"><span class="dot"></span>Tessera Labs · Bucketwise for Jira Software</div>
+  <h1>Data security &amp; privacy</h1>
+  <p class="sub">What Bucketwise accesses in your Jira site, what it stores, and what it does with either.</p>
+
+  <div class="updated"><span class="dot"></span>Effective September 26, 2026</div>
+
+  <article>
+    <section id="summary">
+      <h2>Summary</h2>
+      <p>Bucketwise is an Atlassian Forge app built for Jira Software. It runs entirely on Atlassian's Forge platform, and does not operate any servers, databases, or infrastructure of its own outside that platform.</p>
+      <div class="grid">
+        <div class="fact"><span class="k">Data stored</span><span class="v">None</span></div>
+        <div class="fact"><span class="k">Third-party sharing</span><span class="v">None</span></div>
+        <div class="fact"><span class="k">Infrastructure</span><span class="v">Atlassian Forge only</span></div>
+        <div class="fact"><span class="k">External network calls</span><span class="v">None</span></div>
+      </div>
+    </section>
+
+    <section id="access">
+      <h2>What data Bucketwise accesses</h2>
+      <p>When installed on a Jira site, Bucketwise reads and writes only the Jira Software data needed to run a bucket estimation session:</p>
+      <ul>
+        <li>Issue details — key, summary, description preview, issue type, and current Story Points value — for issues in the project's backlog, board, or sprints.</li>
+        <li>Board and sprint configuration, including which custom field is used for Story Points.</li>
+        <li>Project metadata needed to scope the above.</li>
+      </ul>
+      <p>Bucketwise writes back only to the Story Points field of issues the facilitator explicitly chooses to save.</p>
+    </section>
+
+    <section id="storage">
+      <h2>What Bucketwise stores</h2>
+      <p>Bucketwise stores no data of its own. Every time the board is opened, it is rebuilt fresh from your Jira site's live data.</p>
+      <div class="callout">
+        <span class="label">No draft, no cache, no tracking</span>
+        <p>There is no database, draft, or user-tracking record kept between sessions, and no personal data — names, emails, or account identifiers — is retained after a request completes.</p>
+      </div>
+    </section>
+
+    <section id="sharing">
+      <h2>Data sharing with third parties</h2>
+      <p>Bucketwise does not share, sell, or transmit any data to third parties. All data exchanged by the app stays between your Jira site and Atlassian's own Forge runtime — there are no external API calls, analytics services, or logging destinations outside Atlassian's platform.</p>
+    </section>
+
+    <section id="encryption">
+      <h2>Encryption and infrastructure</h2>
+      <p>Bucketwise inherits its infrastructure security directly from Atlassian Forge, including encryption in transit and at rest, and Atlassian's own compliance certifications for the underlying platform. Tessera Labs does not manage or have access to any separate infrastructure for this app.</p>
+    </section>
+
+    <section id="rights">
+      <h2>Your rights</h2>
+      <p>Because Bucketwise retains no personal data after a request completes, there is no stored personal data to access, export, or erase. Uninstalling the app immediately removes its access to your Jira site's data.</p>
+    </section>
+
+    <section id="changes">
+      <h2>Changes to this statement</h2>
+      <p>If Bucketwise's data handling changes in a future version, this statement will be updated and the effective date above will reflect the change.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>For privacy or security questions, reach the Tessera Labs team at:</p>
+      <div class="copyrow">
+        <code id="support-email">support@tesseralabs.example</code>
+        <button class="copy-btn" type="button" onclick="copyEmail()">Copy</button>
+      </div>
+    </section>
+
+    <footer>
+      This statement covers <strong>Bucketwise</strong>, published by <strong>Tessera Labs</strong> on the Atlassian Marketplace.
+    </footer>
+  </article>
+</div>
+
+<script>
+  function copyEmail(){
+    var text = document.getElementById('support-email').textContent;
+    var btn = event.target;
+    var original = btn.textContent;
+    function done(ok){
+      btn.textContent = ok ? 'Copied' : 'Select to copy';
+      setTimeout(function(){ btn.textContent = original; }, 1500);
+    }
+    try{
+      navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
+    }catch(e){ done(false); }
+  }
+</script>
